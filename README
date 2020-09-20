@@ -1,0 +1,17 @@
+To get the build started, run the fullowing where `build_gcc` is the build
+directory and GCC is the toolchain:
+
+`$ meson build_gcc --cross-file arm_cortex_m4.txt --cross-file arm_cortex_m4_gcc.txt`
+
+or, the the following where llvm is the toolchain:
+
+`$ meson build_llvm --cross-file arm_cortex_m4.txt --cross-file arm_cortex_m4_clang.txt`
+
+Out-of-source builds are enforced by the build system. You can choose any
+name for your build directory.
+
+To compile, run the following inside your build directory:
+
+`$ ninja`
+
+Debug builds are created by default.
