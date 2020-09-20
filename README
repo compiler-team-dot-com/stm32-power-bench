@@ -15,3 +15,13 @@ To compile, run the following inside your build directory:
 `$ ninja`
 
 Debug builds are created by default.
+
+# Debugging
+
+From a terminal:
+
+`$ openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg`
+
+From another terminal:
+
+`$ gdb -q -x openocd.gdb my.elf`
