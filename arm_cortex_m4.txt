@@ -1,0 +1,8 @@
+[constants]
+ld_script = '../SW4STM32/STM32F3-Discovery/STM32F303VCTx_FLASH.ld'
+
+[host_machine]
+system = 'none'
+cpu_family = 'arm'
+cpu = 'cortex-m4'
+endian = 'little'

@@ -1,0 +1,22 @@
+[binaries]
+c = 'clang'
+ar = 'llvm-ar'
+as = 'llvm-as'
+ld = 'llvm-link'
+objdump = 'llvm-objdump'
+objcopy = 'llvm-objcopy'
+size = 'llvm-size'
+strip = 'llvm-strip'
+
+[properties]
+c_args = [
+    '--target=arm-none-eabi',
+    '-march=armv7',
+    '-mcpu=cortex-m4',
+    '-mfpu=fpv4-sp-d16',
+    '-mfloat-abi=hard']
+c_link_args = [
+    '-T' + ld_script,
+    '-lcompiler_rt',
+    '-L/home/centos/gcc-arm-none-eabi-9-2020-q2-update/arm-none-eabi/lib',
+    '-L/home/centos/devel/compiler-rt/buildresults']

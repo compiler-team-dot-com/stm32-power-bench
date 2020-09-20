@@ -1,0 +1,41 @@
+[binaries]
+c = 'arm-none-eabi-gcc'
+ar = 'arm-none-eabi-ar'
+strip = 'arm-none-eabi-strip'
+ld = 'arm-none-eabi-ld'
+as = 'arm-none-eabi-as'
+objdump = 'arm-none-eabi-objdump'
+objcopy = 'arm-none-eabi-objcopy'
+size = 'arm-none-eabi-size'
+
+[properties]
+c_args = [
+    '-mthumb',
+    '-mcpu=cortex-m4',
+    '-mfpu=fpv4-sp-d16',
+    '-mfloat-abi=hard',
+    '-fdata-sections',
+    '-ffunction-sections',
+    '-DUSE_HAL_DRIVER',
+    '-DSTM32F303xC',
+    '-I../Inc',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/STM32F3xx_HAL_Driver/Inc',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/STM32F3xx_HAL_Driver/Inc/Legacy',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/CMSIS/Device/ST/STM32F3xx/Include',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/CMSIS/Include',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/BSP/STM32F3-Discovery',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/BSP/Components/Common',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/CMSIS/Include']
+
+c_link_args = [
+    '-mthumb',
+    '-mcpu=cortex-m4',
+    '-mfpu=fpv4-sp-d16',
+    '-mfloat-abi=hard',
+    '-specs=nano.specs',
+    '-lc',
+    '-lm',
+    '-lnosys',
+    '-Wl,--cref',
+    '-Wl,--gc-sections',
+    '-T' + ld_script]
