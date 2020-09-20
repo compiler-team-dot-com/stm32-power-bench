@@ -80,7 +80,7 @@ inc = include_directories(
     cube_drivers / 'CMSIS/Include'
 )
 
-if get_option('debug')
+if get_option('debug') == true
     # By default, Meson takes care of -g.
     c_args += ['-gdwarf-2']
 endif
