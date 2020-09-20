@@ -1,4 +1,5 @@
 [binaries]
+
 c = 'arm-none-eabi-gcc'
 ar = 'arm-none-eabi-ar'
 strip = 'arm-none-eabi-strip'
@@ -9,6 +10,7 @@ objcopy = 'arm-none-eabi-objcopy'
 size = 'arm-none-eabi-size'
 
 [properties]
+
 c_args = [
     '-mthumb',
     '-mcpu=cortex-m4',

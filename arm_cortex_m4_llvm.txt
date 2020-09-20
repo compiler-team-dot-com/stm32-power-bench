@@ -1,0 +1,52 @@
+[binaries]
+
+c = 'clang'
+c_ld = 'lld'
+ld = 'lld'
+ar = 'llvm-ar'
+as = 'llvm-as'
+objdump = 'llvm-objdump'
+objcopy = 'llvm-objcopy'
+size = 'llvm-size'
+strip = 'llvm-strip'
+
+[properties]
+
+c_args = [
+    '--target=arm-none-eabi',
+    '-mcpu=cortex-m4',
+    '-mfpu=fpv4-sp-d16',
+    '-mfloat-abi=hard',
+    '-fdata-sections',
+    '-ffunction-sections',
+    '-DUSE_HAL_DRIVER',
+    '-DSTM32F303xC',
+    '-I../Inc',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/STM32F3xx_HAL_Driver/Inc',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/STM32F3xx_HAL_Driver/Inc/Legacy',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/CMSIS/Device/ST/STM32F3xx/Include',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/CMSIS/Include',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/BSP/STM32F3-Discovery',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/BSP/Components/Common',
+    '-I../STM32Cube_FW_F3_V1.11.1/Drivers/CMSIS/Include']
+
+c_link_args = [
+
+    # Avoid linking system's libs such as compiler-rt.
+    # I have been getting the following error and decided to compiler my own:
+    # ld.lld: error: unable to find library -lclang_rt.builtins-arm
+    '-nodefaultlibs',
+    '-lcompiler_rt',
+
+    '--target=arm-none-eabi',
+    '-T' + ld_script,
+
+    # Reject shared libs.
+    '-Bstatic',
+
+    '-lc',
+    '-lm',
+    '-lnosys',
+    '-L/home/centos/gcc-arm-none-eabi-9-2020-q2-update/arm-none-eabi/lib',
+    '-L/home/centos/devel/compiler-rt/buildresults',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a']

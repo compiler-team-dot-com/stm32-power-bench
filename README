@@ -5,7 +5,7 @@ directory and GCC is the toolchain:
 
 or, the the following where llvm is the toolchain:
 
-`$ meson build_llvm --cross-file arm_cortex_m4.txt --cross-file arm_cortex_m4_clang.txt`
+`$ meson build_llvm --cross-file arm_cortex_m4.txt --cross-file arm_cortex_m4_llvm.txt`
 
 Out-of-source builds are enforced by the build system. You can choose any
 name for your build directory.
@@ -25,3 +25,24 @@ From a terminal:
 From another terminal:
 
 `$ gdb -q -x openocd.gdb my.elf`
+
+# Tips
+
+To check what toolchain was used to compile an elf:
+
+`$ arm-none-eabi-readelf --string-dump .comment my.elf`
+
+LLVM:
+
+```
+String dump of section '.comment':
+  [     0]  Linker: LLD 12.0.0 (/home/centos/devel/llvm-project/lld 2e74b6d80f347203ae17ec8b09e6b3e86ff6c179)
+  [    63]  clang version 12.0.0 (/home/centos/devel/llvm-project/clang 2e74b6d80f347203ae17ec8b09e6b3e86ff6c179)
+```
+
+GCC:
+
+```
+String dump of section '.comment':
+  [     0]  GCC: (GNU Arm Embedded Toolchain 9-2020-q2-update) 9.3.1 20200408 (release)
+```

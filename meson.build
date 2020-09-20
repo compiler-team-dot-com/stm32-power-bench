@@ -9,6 +9,16 @@ cube_path = 'STM32Cube_FW_F3_V1.11.1'
 bsp_path = cube_path / 'Drivers/BSP/STM32F3-Discovery'
 hal_path = cube_path / 'Drivers/STM32F3xx_HAL_Driver/Src'
 
+thumb_obj = [
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/crtbegin.o',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/crtend.o',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/crtfastmath.o',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/crti.o',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/crtn.o',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/libgcc.a',
+    '/home/centos/gcc-arm-none-eabi-9-2020-q2-update/lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/libgcov.a'
+]
+
 src_files = files(
     src_path / 'main.c',
     src_path / 'stm32f3xx_it.c',
@@ -52,7 +62,4 @@ sources = [
     hal_files
 ]
 
-host_compiler_id = meson.get_compiler('c', native : false).get_id()
-# message(host_compiler_id)
-
-executable('stm32_power_bench', sources)
+executable('stm32_power_bench', sources, objects: thumb_obj)
