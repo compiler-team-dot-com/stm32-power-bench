@@ -1,8 +1,3 @@
-[constants]
-
-# This link script is shared among all builds.
-ld_script = '../SW4STM32/STM32F3-Discovery/STM32F303VCTx_FLASH.ld'
-
 [host_machine]
 
 system = 'none'
