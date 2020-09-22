@@ -31,7 +31,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Uncomment the corresponding line to select the RTC Clock source */
 
-/* LSI used as RTC source clock. The RTC Clock
+/* LSI used as RTC source clock. The RTC Clock */
 /* #define RTC_CLOCK_SOURCE_LSE */
 
 /* LSI used as RTC source clock. The RTC Clock
