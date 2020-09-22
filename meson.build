@@ -29,7 +29,12 @@ src_files = files(
     src_path / 'system_stm32f3xx.c',
 )
 
-asm_files = files('SW4STM32/startup_stm32f303xc.s')
+# Map host_machine.system => path to startup assembly.
+startup_asms = {
+    'stm32': files('SW4STM32/startup_stm32f303xc.s'),
+    'qemu': '',
+}
+startup_asm = startup_asms[host_machine.system()]
 bsp_files = files(bsp_path / 'stm32f3_discovery.c')
 
 hal_files = files(
@@ -54,7 +59,7 @@ hal_files = files(
 
 sources = [
     src_files,
-    asm_files,
+    startup_asm,
     bsp_files,
     hal_files,
 ]
