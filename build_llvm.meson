@@ -20,7 +20,7 @@ c_args = ['--target=' + target_triple]
 
 c_link_args = [
 
-    # TODO brunoflores I still need to verify if compiler-it
+    # TODO brunoflores I still need to verify if compiler-rt
     # affects the final product at all. It does not seem to do any harm though.
     '-lcompiler_rt',
     '-L/home/centos/devel/compiler-rt/buildresults',
