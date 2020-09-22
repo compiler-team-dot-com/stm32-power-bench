@@ -31,9 +31,12 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Uncomment the corresponding line to select the RTC Clock source */
 
-/* #define RTC_CLOCK_SOURCE_LSE */   /* LSE used as RTC source clock */
-#define RTC_CLOCK_SOURCE_LSI   /* LSI used as RTC source clock. The RTC Clock
-                                      may varies due to LSI frequency dispersion. */
+/* LSI used as RTC source clock. The RTC Clock
+/* #define RTC_CLOCK_SOURCE_LSE */
+
+/* LSI used as RTC source clock. The RTC Clock
+   may varies due to LSI frequency dispersion. */
+#define RTC_CLOCK_SOURCE_LSI   
 
 #ifdef RTC_CLOCK_SOURCE_LSI
 #define RTC_ASYNCH_PREDIV    0x7F
