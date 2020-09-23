@@ -22,16 +22,18 @@ src_files = files(
 
 # Map host_machine.system => path to startup assembly.
 startup_asms = {
-    'stm32': files('SW4STM32/startup_stm32f303xc.s'),
+    'stm32': 'SW4STM32/startup_stm32f303xc.s',
     'qemu': '',
 }
 startup_asm = startup_asms[host_machine.system()]
+summary('Startup assembly', startup_asm, section: 'Files')
 
 sources = [
     src_files,
-    startup_asm,
+    files(startup_asm),
 ]
 
+summary('Debug', get_option('debug'), section: 'Flags')
 if get_option('debug') == true
     # By default, Meson takes care of "-g".
     c_args += ['-gdwarf-2']
@@ -87,7 +89,9 @@ link_scripts = {
     'stm32': meson.current_source_dir() / 'SW4STM32/STM32F3-Discovery/STM32F303VCTx_FLASH.ld',
     'qemu': meson.current_source_dir() / '',
 }
-link_args += ['-Wl,--script=' + link_scripts[host_machine.system()]]
+link_script = link_scripts[host_machine.system()]
+link_args += ['-Wl,--script=' + link_script]
+summary('Link script', link_script, section: 'Files')
 
 executable(
     'stm32_power_bench',
