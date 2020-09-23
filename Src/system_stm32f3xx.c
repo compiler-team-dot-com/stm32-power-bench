@@ -67,6 +67,7 @@
   * @{
   */
 
+#include "config.h"
 #include "stm32f3xx.h"
 
 /**

@@ -22,6 +22,7 @@
 #define __MAIN_H
 
 /* Includes ------------------------------------------------------------------*/
+#include "config.h"
 #include "stm32f3xx_hal.h"
 #include "stm32f3_discovery.h"
 #include "stm32f3xx_lp_modes.h"

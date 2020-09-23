@@ -65,6 +65,8 @@ lib = static_library(
 )
 
 cube_dep = declare_dependency(
+    # This include allows the parent project to include headers from this
+    # subproject.
     include_directories: inc,
     link_with: lib,
 )

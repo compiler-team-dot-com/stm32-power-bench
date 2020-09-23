@@ -37,10 +37,14 @@ endif
 # These are required by the ARM drivers, and they will fail to compile
 # if you do not make those choices. Look for the pre-processor directives
 # in their sources.
-c_args += [
-    '-DUSE_HAL_DRIVER',
-    '-DSTM32F303xC',
-]
+config_data = configuration_data()
+config_data.set('USE_HAL_DRIVER', true)
+config_data.set('STM32F303xC', true)
+config_file = configure_file(
+    output: 'config.h',
+    configuration: config_data,
+)
+config_inc = include_directories('.')
 
 c_args += [
     '-mthumb',
@@ -58,8 +62,8 @@ link_args = [
 
     # Load libraries.
     '-lc',
-    '-lm',
-    '-lnosys',
+    # '-lm',
+    # '-lnosys',
 
     # Remove unused sections, if you can, please.
     '-Wl,--gc-sections',
@@ -84,7 +88,10 @@ link_args += ['-Wl,--script=' + link_scripts[host_machine.system()]]
 executable(
     'stm32_power_bench',
     sources: sources,
-    include_directories: include_directories('Inc'),
+    include_directories: [
+        include_directories('Inc'),
+        config_inc,
+    ],
     c_args: c_args,
     link_args: link_args,
     dependencies: [cube_dep, gcc_arm_dep],
