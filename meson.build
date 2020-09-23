@@ -93,7 +93,7 @@ link_script = link_scripts[host_machine.system()]
 link_args += ['-Wl,--script=' + link_script]
 summary('Link script', link_script, section: 'Files')
 
-executable(
+elf = executable(
     'stm32_power_bench',
     sources: sources,
     include_directories: [
@@ -104,3 +104,6 @@ executable(
     link_args: link_args,
     dependencies: [cube_dep, gcc_arm_dep],
 )
+
+test_script = find_program('tester.sh')
+test('qemu_boots', test_script, args: [elf])
