@@ -1,30 +1,17 @@
 project('stm32_power_bench', ['c'], meson_version: '>=0.55.0')
 
 src_path = 'Src'
-cube_path = 'STM32Cube_FW_F3_V1.11.1'
-cube_drivers = cube_path / 'Drivers'
-bsp_path = cube_drivers / 'BSP/STM32F3-Discovery'
-hal_path = cube_drivers / 'STM32F3xx_HAL_Driver/Src'
-
-# Array populated below.
 c_args = []
 
-thumb_path = 'gcc-arm-none-eabi-9-2020-q2-update/lib/gcc' /\
-    'arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard'
-thumb_obj = files(
-    thumb_path / 'crtbegin.o',
-    thumb_path / 'crtend.o',
-    thumb_path / 'crtfastmath.o',
-    thumb_path / 'crti.o',
-    thumb_path / 'crtn.o',
-    thumb_path / 'libgcc.a',
-    thumb_path / 'libgcov.a',
-)
+cube_prj = subproject('stm32_cube', required: true)
+cube_dep = cube_prj.get_variable('cube_dep')
+
+gcc_arm_prj = subproject('gcc-arm-none-eabi', required: true)
+gcc_arm_dep = gcc_arm_prj.get_variable('gcc_arm_dep')
 
 src_files = files(
     src_path / 'main.c',
     src_path / 'stm32f3xx_it.c',
-    src_path / 'stm32f3xx_hal_msp.c',
     src_path / 'stm32f3xx_lp_modes.c',
     src_path / 'system_stm32f3xx.c',
 )
@@ -35,45 +22,11 @@ startup_asms = {
     'qemu': '',
 }
 startup_asm = startup_asms[host_machine.system()]
-bsp_files = files(bsp_path / 'stm32f3_discovery.c')
-
-hal_files = files(
-    hal_path / 'stm32f3xx_hal_rtc.c',
-    hal_path / 'stm32f3xx_hal_rtc_ex.c',
-    hal_path / 'stm32f3xx_hal_tim.c',
-    hal_path / 'stm32f3xx_hal_tim_ex.c',
-    hal_path / 'stm32f3xx_hal.c',
-    hal_path / 'stm32f3xx_hal_rcc.c',
-    hal_path / 'stm32f3xx_hal_rcc_ex.c',
-    hal_path / 'stm32f3xx_hal_gpio.c',
-    hal_path / 'stm32f3xx_hal_dma.c',
-    hal_path / 'stm32f3xx_hal_cortex.c',
-    hal_path / 'stm32f3xx_hal_pwr.c',
-    hal_path / 'stm32f3xx_hal_pwr_ex.c',
-    hal_path / 'stm32f3xx_hal_flash.c',
-    hal_path / 'stm32f3xx_hal_flash_ex.c',
-    hal_path / 'stm32f3xx_hal_i2c.c',
-    hal_path / 'stm32f3xx_hal_i2c_ex.c',
-    hal_path / 'stm32f3xx_hal_exti.c',
-)
 
 sources = [
     src_files,
     startup_asm,
-    bsp_files,
-    hal_files,
 ]
-
-inc = include_directories(
-    'Inc',
-    cube_drivers / 'STM32F3xx_HAL_Driver/Inc',
-    cube_drivers / 'STM32F3xx_HAL_Driver/Inc/Legacy',
-    cube_drivers / 'CMSIS/Device/ST/STM32F3xx/Include',
-    cube_drivers / 'CMSIS/Include',
-    cube_drivers / 'BSP/STM32F3-Discovery',
-    cube_drivers / 'BSP/Components/Common',
-    cube_drivers / 'CMSIS/Include',
-)
 
 if get_option('debug') == true
     # By default, Meson takes care of "-g".
@@ -131,8 +84,8 @@ link_args += ['-Wl,--script=' + link_scripts[host_machine.system()]]
 executable(
     'stm32_power_bench',
     sources: sources,
-    objects: thumb_obj,
-    include_directories: inc,
+    include_directories: include_directories('Inc'),
     c_args: c_args,
     link_args: link_args,
+    dependencies: [cube_dep, gcc_arm_dep],
 )
