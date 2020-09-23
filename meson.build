@@ -1,4 +1,8 @@
-project('stm32_power_bench', ['c'], meson_version: '>=0.55.0')
+project(
+    'stm32_power_bench', ['c'], meson_version: '>=0.55.0',
+    version: run_command('head', 
+        meson.source_root() / 'VERSION').stdout().strip(),
+)
 
 src_path = 'Src'
 c_args = []
