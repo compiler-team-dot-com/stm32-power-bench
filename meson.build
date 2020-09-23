@@ -93,6 +93,15 @@ link_script = link_scripts[host_machine.system()]
 link_args += ['-Wl,--script=' + link_script]
 summary('Link script', link_script, section: 'Files')
 
+meson.get_compiler('c', native: false).compiles('''
+#include<stdio.h>
+int main(int argc, char **argv) {
+  printf("%s\n", "stdout");
+  fprintf(stderr, "%s\n", "stderr");
+  return 0;
+}
+''', args: c_args, name : 'compiles')
+
 elf = executable(
     'stm32_power_bench',
     sources: sources,
