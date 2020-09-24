@@ -1,0 +1,2 @@
+ option('extradebug', type: 'boolean', value: true, 
+    description: 'Enable additional debug code.')

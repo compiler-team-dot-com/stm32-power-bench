@@ -1,12 +1,12 @@
 [host_machine]
 
-# `system` is used in the top level script.
-system = 'stm32'
+system = 'baremetal'
 cpu_family = 'arm'
-cpu = 'cortex-m4'
+cpu = 'cortex-m3'
 endian = 'little'
 
 [properties]
 
+env = 'stm32'
 fpu = 'fpv4-sp-d16'
 float_abi = 'hard'

@@ -4,6 +4,9 @@ project(
         meson.source_root() / 'VERSION').stdout().strip(),
 )
 
+compiler_native = meson.get_compiler('c', native: true)
+compiler_cross = meson.get_compiler('c', native: false)
+
 src_path = 'Src'
 c_args = []
 
@@ -25,7 +28,7 @@ startup_asms = {
     'stm32': 'SW4STM32/startup_stm32f303xc.s',
     'qemu': '',
 }
-startup_asm = startup_asms[host_machine.system()]
+startup_asm = startup_asms[meson.get_cross_property('env')]
 summary('Startup assembly', startup_asm, section: 'Files')
 
 sources = [
@@ -89,18 +92,9 @@ link_scripts = {
     'stm32': meson.current_source_dir() / 'SW4STM32/STM32F3-Discovery/STM32F303VCTx_FLASH.ld',
     'qemu': meson.current_source_dir() / '',
 }
-link_script = link_scripts[host_machine.system()]
+link_script = link_scripts[meson.get_cross_property('env')]
 link_args += ['-Wl,--script=' + link_script]
 summary('Link script', link_script, section: 'Files')
-
-meson.get_compiler('c', native: false).compiles('''
-#include<stdio.h>
-int main(int argc, char **argv) {
-  printf("%s\n", "stdout");
-  fprintf(stderr, "%s\n", "stderr");
-  return 0;
-}
-''', args: c_args, name : 'compiles')
 
 elf = executable(
     'stm32_power_bench',
@@ -116,3 +110,9 @@ elf = executable(
 
 test_script = find_program('tester.sh')
 test('qemu_boots', test_script, args: [elf])
+
+flasher = find_program('STM32_Programmer_CLI')
+run_target('flash', command: [flasher, '-c', 'port=SWD', '-d', elf])
+
+summary('Native compiler ' + compiler_native.get_id(), compiler_native.version(), section: 'Versions')
+summary('Cross compiler ' + compiler_cross.get_id(), compiler_cross.version(), section: 'Versions')
