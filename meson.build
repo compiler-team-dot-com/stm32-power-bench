@@ -1,6 +1,6 @@
 project(
     'stm32_power_bench', ['c'], meson_version: '>=0.55.0',
-    version: run_command('head', 
+    version: run_command('head',
         meson.source_root() / 'VERSION').stdout().strip(),
 )
 
@@ -27,6 +27,7 @@ startup_asms = {
     'stm32': 'SW4STM32/startup_stm32f303xc.s',
     'qemu': '',
 }
+# TODO brunoflores Add error handling to this dictionary lookup.
 startup_asm = startup_asms[meson.get_cross_property('env')]
 summary('Startup assembly', startup_asm, section: 'Files')
 
@@ -44,6 +45,9 @@ endif
 # These are required by the ARM drivers, and they will fail to compile
 # if you do not make those choices. Look for the pre-processor directives
 # in their sources.
+#
+# TODO brunoflores Investigate add_project_arguments and
+# add_global_project_args.
 config_data = configuration_data()
 config_data.set('USE_HAL_DRIVER', true)
 config_data.set('STM32F303xC', true)
