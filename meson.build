@@ -8,7 +8,6 @@ compiler_native = meson.get_compiler('c', native: true)
 compiler_cross = meson.get_compiler('c', native: false)
 
 src_path = 'Src'
-c_args = []
 
 cube_prj = subproject('stm32_cube', required: true)
 cube_dep = cube_prj.get_variable('cube_dep')
@@ -38,8 +37,7 @@ sources = [
 
 summary('Debug', get_option('debug'), section: 'Flags')
 if get_option('debug') == true
-    # By default, Meson takes care of "-g".
-    c_args += ['-gdwarf-2']
+    add_project_arguments('-gdwarf-2', language: 'c', native: false)
 endif
 
 # "-D" directives.
@@ -54,15 +52,6 @@ config_file = configure_file(
     configuration: config_data,
 )
 config_inc = include_directories('.')
-
-c_args += [
-    '-mthumb',
-    '-mcpu=' + host_machine.cpu(),
-    '-mfpu=' + meson.get_cross_property('fpu'),
-    '-mfloat-abi=' + meson.get_cross_property('float_abi'),
-    '-fdata-sections',
-    '-ffunction-sections',
-]
 
 link_args = [
 
@@ -103,7 +92,14 @@ elf = executable(
         include_directories('Inc'),
         config_inc,
     ],
-    c_args: c_args,
+    c_args: [
+        '-mthumb',
+        '-mcpu=' + host_machine.cpu(),
+        '-mfpu=' + meson.get_cross_property('fpu'),
+        '-mfloat-abi=' + meson.get_cross_property('float_abi'),
+        '-fdata-sections',
+        '-ffunction-sections',
+    ],
     link_args: link_args,
     dependencies: [cube_dep, gcc_arm_dep],
 )
